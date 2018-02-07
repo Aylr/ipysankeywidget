@@ -3,7 +3,6 @@ ipysankeywidget
 sklearn
 numpy
 matplotlib
-itertools
 seaborn
 pandas
 ipywidgets
