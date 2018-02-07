@@ -1,2 +1,8 @@
 # This file is used by e.g. Binder to setup the environment
-ipysankeywidget
+ipysankeywidget==0.2.3
+sklearn
+numpy
+matplotlib
+seaborn
+pandas
+ipywidgets==7.0.0
