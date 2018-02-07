@@ -196,7 +196,7 @@ def draw_sankey(pop_size, hri_estimate, human_estimate):
     display(w)
     
 def threshold_tool():
-    filepath = '../../2018-02-07_ACO_holdout_combined_predictions_scrubbed.csv'
+    filepath = '2018-02-07_ACO_holdout_combined_predictions_scrubbed.csv'
     holdout_full = pd.read_csv(filepath)
     # holdout_full.head()
 
