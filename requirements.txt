@@ -1,2 +1,9 @@
 # This file is used by e.g. Binder to setup the environment
 ipysankeywidget
+sklearn
+numpy
+matplotlib
+itertools
+seaborn
+pandas
+ipywidgets
