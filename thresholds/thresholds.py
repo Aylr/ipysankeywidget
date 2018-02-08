@@ -109,7 +109,7 @@ def display_stats(tp, fp, tn, fn):
         print('{}: {:.3f}'.format(title, stat))
 
 def threshold_picker(
-        df,
+        population,
         threshold_hri,
         threshold_human,
         pop_size,
@@ -119,7 +119,7 @@ def threshold_picker(
         human_prob,
         verbose=False):
     """Graph and calculate from the holdout set."""
-
+    df = file_loader(population)
     # cm_hri = calculate_confusion_matrix(df, threshold_hri, label_col=hri_label, prob_col='HRi_prediction')
     # normalized_cm_hri = cm_hri.astype('float') / cm_hri.sum(axis=1)[:, np.newaxis]
     # expected_cm_hri = normalized_cm_hri * pop_size
@@ -195,22 +195,30 @@ def draw_sankey(pop_size, hri_estimate, human_estimate):
     w = SankeyWidget(links=links, layout=layout, margins=dict(top=0, bottom=0, left=100, right=100))
     display(w)
     
-def threshold_tool():
-    filepath = '2018-02-07_ACO_holdout_combined_predictions_scrubbed.csv'
-    holdout_full = pd.read_csv(filepath)
-    # holdout_full.head()
+def file_loader(pop):
+    if pop == 'ACO':
+        try:
+            df = pd.read_csv('../../2018-02-07_ACO_holdout_combined_predictions_scrubbed.csv')
+        except FileNotFoundError:
+            df = pd.read_csv('2018-02-07_ACO_holdout_combined_predictions_scrubbed.csv')
+    elif pop == 'Commercial + Medicaid':
+        try:
+            df = pd.read_csv('../../2018-02-08_Commercial_Medicaid_holdout_combined_predictions_scrubbed.csv')
+        except FileNotFoundError:
+            df = pd.read_csv('2018-02-08_Commercial_Medicaid_holdout_combined_predictions_scrubbed.csv')
+    return df
 
+def threshold_tool():
     button_style = ipywidgets.Layout(width='600px')
 
     return ipywidgets.interact(
         threshold_picker,
-        df=ipywidgets.fixed(holdout_full),
+        population=ipywidgets.RadioButtons(options=['ACO', 'Commercial + Medicaid'], description='Group'),
         threshold_hri=ipywidgets.FloatSlider(min=0.001, max=1, step=.01, value=0.5, description='HRi', continuous_update=False, layout=button_style),
         threshold_human=ipywidgets.FloatSlider(min=0.001, max=1, step=.01, value=0.5, description='Human', continuous_update=False, layout=button_style),
-        pop_size=ipywidgets.IntSlider(min=100, max=100000, step=100, value=1000, description='Population', continuous_update=False, layout=button_style),
+        pop_size=ipywidgets.IntSlider(min=100, max=300000, step=100, value=10000, description='Population', continuous_update=False, layout=button_style),
         hri_label=ipywidgets.fixed('HR_Identified'),
         hri_prob=ipywidgets.fixed('HRi_prediction'),
         human_label=ipywidgets.fixed('ICMP_Selected'),
         human_prob=ipywidgets.fixed('Human_prediction'),
     )
-
