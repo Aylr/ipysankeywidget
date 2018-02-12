@@ -161,8 +161,10 @@ def threshold_picker(
 
     tp3 = len(true_positives(threshold_human, human_df, human_prob, human_label))
     fp3 = len(false_positives(threshold_human, human_df, human_prob, human_label))
-    tn3 = tn1 + tn2
-    fn3 = fn1 + fn2
+    # This is subtle = you need tn1 (HRi = N) plus tn2 (Human = N) plus the sliver of (HRi = Y / Human = N) below the HRi threshold
+    tn3 = tn1 + tn2 + len(df.loc[(df.HRi_prediction < threshold_hri) & (df.HR_Identified == 'Y') & (df.ICMP_Selected == 'N')])
+    # This is subtle - you need fn2 plus the ICMP Y that were below the HRi threshold
+    fn3 = fn2 + len(df.loc[(df.HRi_prediction < threshold_hri) & (df.ICMP_Selected == 'Y')])
 
     print('\n')
     print_cm(tp3, fp3, tn3, fn3)
@@ -222,3 +224,4 @@ def threshold_tool():
         human_label=ipywidgets.fixed('ICMP_Selected'),
         human_prob=ipywidgets.fixed('Human_prediction'),
     )
+
