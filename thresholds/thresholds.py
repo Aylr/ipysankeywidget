@@ -64,12 +64,13 @@ def false_negatives(threshold, df, probabilty_col, label_col):
     return false_neg
 
 
-def dynamic_cm(df, threshold, probabilty_col, label_col):
+def dynamic_cm(df, threshold, probabilty_col, label_col, verbose=True):
     tp = len(true_positives(threshold, df, probabilty_col, label_col))
     fn = len(false_negatives(threshold, df, probabilty_col, label_col))
     tn = len(true_negatives(threshold, df, probabilty_col, label_col))
     fp = len(false_positives(threshold, df, probabilty_col, label_col))
-    print_cm(tp, fp, tn, fn)
+    if verbose:
+        print_cm(tp, fp, tn, fn)
 
     return tp, fp, tn, fn
 
