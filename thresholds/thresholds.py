@@ -231,7 +231,8 @@ def load_population(pop):
         df = _attempt_both_file_locations('2018-02-14_ACO_holdout_optins_enhanced_combined_predictions_scrubbed.csv')
     elif pop == 'Commercial + Medicaid':
         df = _attempt_both_file_locations('2018-02-08_Commercial_Medicaid_holdout_combined_predictions_scrubbed.csv')
-
+    elif pop == 'Commercial + Medicaid + opt-ins':
+        df = _attempt_both_file_locations('2018-02-22_Commercial_Medicaid_holdout_combined_predictions_scrubbed.csv')
     return df
 
 
@@ -240,7 +241,7 @@ def threshold_tool():
 
     return ipywidgets.interact(
         threshold_picker,
-        population=ipywidgets.RadioButtons(options=['ACO', 'ACO + opt-ins', 'Commercial + Medicaid'], description='Group'),
+        population=ipywidgets.RadioButtons(options=['ACO', 'ACO + opt-ins', 'Commercial + Medicaid', 'Commercial + Medicaid + opt-ins'], description='Group', layout=button_style),
         threshold_hri=ipywidgets.FloatSlider(min=0.001, max=1, step=.01, value=0.5, description='HRi', continuous_update=False, layout=button_style),
         threshold_human=ipywidgets.FloatSlider(min=0.001, max=1, step=.01, value=0.5, description='Human', continuous_update=False, layout=button_style),
         pop_size=ipywidgets.IntSlider(min=100, max=300000, step=100, value=10000, description='Population', continuous_update=False, layout=button_style),
